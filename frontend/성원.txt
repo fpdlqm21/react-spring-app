@@ -1,7 +1,0 @@
-성원 이것을 보아라.
-
-깃허브에 빈 폴더는 안올라간다고 해서 텍스트파일 추가했어
-
-여기 frontend폴더에서 작업하면 돼
-
-gitignore는 react-spring-app폴더 내에 만들면 돼(frontend폴더보다 하나 더 상위 폴더)
