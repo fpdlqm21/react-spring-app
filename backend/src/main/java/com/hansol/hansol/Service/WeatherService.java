@@ -20,7 +20,7 @@ public class WeatherService {
     private final String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
     private final String ServiceKey = "UGVc41C%2B%2FcUvUxumr3aNPb%2FdVTiFatzrAS99ZkHYRxUSVoedG2IKA7gTwCI7hr0kRXSQJd%2FBNmTCQOVE87Fyeg%3D%3D";
 
-    //    기상청 api 요청
+    //    기상청 api 요청(단기 -> 1시간 이후로 쭉)
     public String getWeatherData() {
 //        기상청에서 3시간 간격으로 예보하는 시간
         int[] frcstTimes = {2,5,8,11,14,17,17,20,23};
