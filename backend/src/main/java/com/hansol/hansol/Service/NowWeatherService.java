@@ -4,6 +4,7 @@ import com.hansol.hansol.Dto.NowWeatherDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -64,6 +65,7 @@ public class NowWeatherService {
     }
 
 //    response 파싱해서 컨트롤러로 넘김
+    @Scheduled(fixedRate = 1800000)
     public NowWeatherDto getNowWeather(){
         String jsonData = getNowWeatherData();
 

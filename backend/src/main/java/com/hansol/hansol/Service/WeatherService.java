@@ -20,31 +20,23 @@ public class WeatherService {
     private final String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
     private final String ServiceKey = "UGVc41C%2B%2FcUvUxumr3aNPb%2FdVTiFatzrAS99ZkHYRxUSVoedG2IKA7gTwCI7hr0kRXSQJd%2FBNmTCQOVE87Fyeg%3D%3D";
 
-    //    기상청 api 요청(단기 -> 1시간 이후로 쭉)
+    //    기상청 api 요청(최저, 최고기온)
     public String getWeatherData() {
 //        기상청에서 3시간 간격으로 예보하는 시간
-        int[] frcstTimes = {2,5,8,11,14,17,17,20,23};
 
         StringBuilder urlBuilder = new StringBuilder(apiUrl);
         String pageNo = "1";
         String numOfRows = "1000";
         String dataType = "JSON";
         String base_date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String base_time = "";
+        String base_time = "0200";
 
         try{
-//            가장 근접한 예보시간 설정
-            int time = LocalTime.now().getHour();
-            int frcstTime = 2;
-
-            for(int i=frcstTimes.length-1; i>=0; i--){
-                if(time>=frcstTimes[i]){
-                    frcstTime = frcstTimes[i];
-                    break;
-                }
+//            오전 2시 이전은 전날 23:00 예보 사용
+            if(LocalTime.now().getHour() <= 2){
+                base_date = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyMMdd"));
+                base_time = "2300";
             }
-
-            base_time = Integer.toString(frcstTime) + "10";
 
             urlBuilder.append("?ServiceKey=").append(ServiceKey)
                     .append("&numOfRows=").append(numOfRows)
@@ -60,7 +52,8 @@ public class WeatherService {
             URI uri = new URI(url);
 
 //            응답데이터 확인용 URI
-            System.out.println(String.format("URI : %s, Time : %s", uri, base_time));
+            System.out.println(String.format("URI : %s", uri));
+            System.out.println(String.format("base_time : %s", base_time));
 
             ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
             return response.getBody();
@@ -70,12 +63,10 @@ public class WeatherService {
         }
     }
 
-    //    DTO생성 후 컨트롤러로 넘김
-    @Scheduled(fixedRate = 1800000) //30분마다 갱신
+    //    response 파싱 후 DTO 컨트롤러로 전달
     public WeatherDto getWeather(){
         String jsonData = getWeatherData();
         String base_date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String base_time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH")) + "00";
 
         try{
 //            JSON응답 파싱
@@ -85,40 +76,31 @@ public class WeatherService {
                     .getJSONObject("items")
                     .getJSONArray("item");
 
-            String temperature = "";
-            String tMax = "";
-            String tMin = "";
+            String maxTemperature = "";
+            String minTemperature = "";
             String rain = "";
             String weatherType = "";
 
             for(int i=0; i<items.length(); i++){
                 JSONObject item = items.getJSONObject(i);
                 String fcstDate = item.getString("fcstDate");
-                String fcstTime = item.getString("fcstTime");
-
-//                base_time, fcsTime 일치하는지 확인용
-                System.out.println(String.format("base_date : %s, fcstDate : %s, base_time : %s, fcsTime : %s", base_date, fcstDate, base_time, fcstTime));
-
 
                 //당일 날씨예보만 저장
-                if(fcstDate.equals(base_date) && fcstTime.equals(base_time)){
+                if(base_date.equals(fcstDate)){
                     String category = item.getString("category");
                     String fcstValue = item.getString("fcstValue");
 
                     //category별 값 저장
                     switch (category){
-                        case "TMP":
-                            temperature =  fcstValue + "℃";
+                        case "TMX":
+                            maxTemperature =  fcstValue + "℃";
                             break;
                         case "POP":
                             rain = fcstValue + "%";
                             break;
-//                        case "TMN":
-//                            tMin = fcstValue + "℃";
-//                            break;
-//                        case "TMX":
-//                            tMax = fcstValue + "℃";
-//                            break;
+                        case "TMN":
+                            minTemperature = fcstValue + "℃";
+                            break;
                         case "SKY":
                             weatherType = fcstValue;
                             if(weatherType.equals("1")){
@@ -133,10 +115,10 @@ public class WeatherService {
                 }
             }
 
-            return new WeatherDto(temperature, rain, weatherType);
+            return new WeatherDto(maxTemperature, minTemperature, rain, weatherType);
         } catch(Exception e){
             e.printStackTrace();
-            return new WeatherDto("N/A", "N/A", "데이터 오류");
+            return new WeatherDto("N/A", "N/A","N/A" ,"데이터 오류");
         }
     }
 }
