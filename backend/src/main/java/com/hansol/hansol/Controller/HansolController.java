@@ -11,6 +11,11 @@ public class HansolController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
     @GetMapping("/form")
     public String goForm(){
         return "form";
