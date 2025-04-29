@@ -1,63 +1,79 @@
-/* reset.css - 기본 요소 리셋 및 크로스 브라우징 정리 */
-
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+  color: inherit;
+	font: inherit;
+	font-size: 100%;
+	vertical-align: baseline;
+  box-sizing: border-box; 
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+ol, ul, li {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+:after, :before {
+  flex-shrink: 0;
   box-sizing: border-box;
 }
-
+:root {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  cursor: default;
+  overflow-wrap: break-word;
+}
 html, body {
+  width: 100%;
   height: 100%;
-  font-family: sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #fff;
-  color: #000;
+  overflow: hidden;
 }
-
-ul, ol, li {
-  list-style: none;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
 img, picture, video, canvas, svg {
   display: block;
   max-width: 100%;
-  height: auto;
 }
-
-input, button, textarea, select {
-  font: inherit;
-  background: none;
-  border: none;
-  outline: none;
-  color: inherit;
-}
-
 button {
+  padding: 0;
+  border: 0;
+  background: none;
+  outline: none;
   cursor: pointer;
-  background-color: transparent;
 }
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
+a, a:hover {
+  color: inherit;
+  text-decoration: none;
 }
-
-hr {
-  border: none;
-  height: 1px;
-  background-color: #ccc;
+img {
+  -webkit-user-drag: none;
 }
-
-address {
-  font-style: normal;
+::selection:not(p, input, textarea){
+  user-select: none;
 }
