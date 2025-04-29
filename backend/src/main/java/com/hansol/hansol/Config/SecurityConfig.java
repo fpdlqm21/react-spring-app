@@ -19,7 +19,7 @@ public class SecurityConfig {
                 )
 //                간편 로그인 설정(구글,)
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/", true)); // 로그인 성공하면 무조건 /(메인 페이지)경로로 이동
+                        .defaultSuccessUrl("/weather", true)); // 로그인 성공하면 무조건 /(메인 페이지)경로로 이동
 
         return http.build(); // 위에서 설정한 보안 필터 체인 반환
     }
