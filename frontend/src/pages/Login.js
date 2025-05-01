@@ -17,7 +17,7 @@ const Login = () => {
         <Input type="email" placeholder="이메일" />
 
         <PasswordWrap>
-          <Input
+          <PasswordInput
             type={showPassword ? "text" : "password"}
             placeholder="비밀번호"
             value={password}
@@ -55,9 +55,7 @@ const Login = () => {
         {/* 회원가입 링크 추가 */}
         <BottomText>
           아직 회원이 아니신가요?{" "}
-          <SignUpLink onClick={() => navigate("/signup")}>
-            회원가입
-          </SignUpLink>
+          <SignUpLink onClick={() => navigate("/signup")}>회원가입</SignUpLink>
         </BottomText>
       </LoginBox>
     </Wrapper>
@@ -91,17 +89,22 @@ const Title = styled.h2`
 `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 95%;
   padding: 12px;
-  padding-right: 40px;
+  padding-right: 0;
   margin-bottom: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
 `;
 
+const PasswordInput = styled(Input)`
+  padding-right: 0;
+`;
+
 const PasswordWrap = styled.div`
   position: relative;
+  margin-bottom: 12px;
 `;
 
 const ToggleBtn = styled.button`
