@@ -1,20 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import SocialLoginButton from "../components/SocialLoginButton";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // navigate 훅 사용
+
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    if (!email) {
+      alert("이메일을 입력해주세요.");
+      emailInputRef.current.focus();
+      return;
+    }
+    if (!email.includes("@")) {
+      alert("이메일 양식이 아닙니다.");
+      emailInputRef.current.focus();
+      return;
+    }
+    if (!password) {
+      alert("비밀번호를 입력해주세요.");
+      passwordInputRef.current.focus();
+      return;
+    }
+
+    // 실제 로그인 로직
+    console.log("로그인 시도", { email, password });
+  };
 
   return (
     <Wrapper>
       <LoginBox>
         <Title>로그인</Title>
 
-        <Input type="email" placeholder="이메일" />
+        <Input
+          type="email"
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          ref={emailInputRef}
+        />
 
         <PasswordWrap>
           <PasswordInput
@@ -22,6 +53,7 @@ const Login = () => {
             placeholder="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            ref={passwordInputRef}
           />
           <ToggleBtn onClick={() => setShowPassword(!showPassword)}>
             {showPassword ? "🙈" : "👁️"}
@@ -44,7 +76,7 @@ const Login = () => {
           </FindLinks>
         </OptionRow>
 
-        <LoginButton>로그인</LoginButton>
+        <LoginButton onClick={handleLogin}>로그인</LoginButton>
 
         <Divider>또는</Divider>
 
@@ -52,7 +84,6 @@ const Login = () => {
         <SocialLoginButton type="google" />
         <SocialLoginButton type="github" />
 
-        {/* 회원가입 링크 추가 */}
         <BottomText>
           아직 회원이 아니신가요?{" "}
           <SignUpLink onClick={() => navigate("/signup")}>회원가입</SignUpLink>
@@ -63,6 +94,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 // 스타일 컴포넌트
 const Wrapper = styled.div`
@@ -89,9 +121,9 @@ const Title = styled.h2`
 `;
 
 const Input = styled.input`
-  width: 95%;
+  width: 100%;
   padding: 12px;
-  padding-right: 0;
+  box-sizing: border-box; 
   margin-bottom: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -99,7 +131,7 @@ const Input = styled.input`
 `;
 
 const PasswordInput = styled(Input)`
-  padding-right: 0;
+  padding-right: 40px; 
 `;
 
 const PasswordWrap = styled.div`
