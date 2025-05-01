@@ -1,18 +1,17 @@
-import './App.css';
-// import 'normalize.css'
-
+// App.js
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-      </header>
-      <ul>
-        <li>ghdh</li>
-        <li>hdsah</li>
-        <li>gasdgsad</li>
-      </ul>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </Router>
   );
 }
 
