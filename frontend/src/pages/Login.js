@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom"; // useNavigate 훅 import
+import { useNavigate } from "react-router-dom"; 
 import SocialLoginButton from "../components/SocialLoginButton";
 
 const Login = () => {
