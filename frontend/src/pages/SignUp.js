@@ -12,7 +12,7 @@ import {
   TermsCheckbox,
   ToggleBtn,
   PasswordWrap,
-} from "./SignUp.styles"; // 스타일 import
+} from "./SignUp.styles"; 
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -24,56 +24,53 @@ const SignUp = () => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // useRef로 각 input 요소에 대한 참조를 생성
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   const nameRef = useRef(null);
 
-  // 이메일 형식 확인 함수
   const isValidEmail = (email) => {
     return email.includes("@");
   };
 
-  // 폼 유효성 검사 및 포커스 이동
   const handleSignUp = () => {
     if (!name) {
       alert("이름을 입력해주세요.");
-      nameRef.current.focus(); // 이름 입력란에 포커스
+      nameRef.current.focus(); 
       return;
     }
     if (!email) {
       alert("이메일을 입력해주세요.");
-      emailRef.current.focus(); // 이메일 입력란에 포커스
+      emailRef.current.focus(); 
       return;
     }
     if (!isValidEmail(email)) {
       alert("이메일 양식이 올바르지 않습니다.");
-      emailRef.current.focus(); // 이메일 입력란에 포커스
+      emailRef.current.focus(); 
       return;
     }
     if (!password) {
       alert("비밀번호를 입력해주세요.");
-      passwordRef.current.focus(); // 비밀번호 입력란에 포커스
+      passwordRef.current.focus(); 
       return;
     }
     if (!confirmPassword) {
       alert("비밀번호 확인을 입력해주세요.");
-      confirmPasswordRef.current.focus(); // 비밀번호 확인 입력란에 포커스
+      confirmPasswordRef.current.focus(); 
       return;
     }
     if (password !== confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
-      confirmPasswordRef.current.focus(); // 비밀번호 확인 입력란에 포커스
+      confirmPasswordRef.current.focus(); 
       return;
     }
     if (!termsAccepted) {
       alert("이용약관에 동의해야 합니다.");
       return;
     }
-    // 실제 회원가입 로직 (API 호출 등)
+    
     console.log("회원가입 성공");
-    // 회원가입이 성공하면 로그인 페이지로 이동
+    
     navigate("/login");
   };
 
@@ -82,14 +79,14 @@ const SignUp = () => {
       <LoginBox>
         <Title>회원가입</Title>
         <Input
-          ref={nameRef} // ref 추가
+          ref={nameRef}
           type="text"
           placeholder="이름"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <Input
-          ref={emailRef} // ref 추가
+          ref={emailRef}
           type="email"
           placeholder="이메일"
           value={email}
@@ -97,7 +94,7 @@ const SignUp = () => {
         />
         <PasswordWrap>
           <Input
-            ref={passwordRef} // ref 추가
+            ref={passwordRef}
             type={showPassword ? "text" : "password"}
             placeholder="비밀번호"
             value={password}
@@ -109,7 +106,7 @@ const SignUp = () => {
         </PasswordWrap>
         <PasswordWrap>
           <Input
-            ref={confirmPasswordRef} // ref 추가
+            ref={confirmPasswordRef}
             type={showPassword ? "text" : "password"}
             placeholder="비밀번호 확인"
             value={confirmPassword}
