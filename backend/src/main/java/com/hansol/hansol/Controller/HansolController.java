@@ -24,6 +24,11 @@ public class HansolController {
         return "form";
     }
 
+    @GetMapping("/api/react")
+    public String reactAPI(){
+        return "Test OK";
+    }
+
 //    @GetMapping("/auth/login/kakao")
 //    public ResponseEntity<?> kakaoLogin(@RequestParam("code") String accessCode, HttpServletResponse httpServletResponse){
 //
