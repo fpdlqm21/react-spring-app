@@ -1,7 +1,10 @@
 package com.hansol.hansol.Controller;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HansolController {
@@ -20,4 +23,9 @@ public class HansolController {
     public String goForm(){
         return "form";
     }
+
+//    @GetMapping("/auth/login/kakao")
+//    public ResponseEntity<?> kakaoLogin(@RequestParam("code") String accessCode, HttpServletResponse httpServletResponse){
+//
+//    }
 }
