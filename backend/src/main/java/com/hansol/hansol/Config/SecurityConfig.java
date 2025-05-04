@@ -1,20 +1,48 @@
 package com.hansol.hansol.Config;
 
+import com.hansol.hansol.Service.UserDetailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity // 모든 url요청 security 제어 받음
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final UserDetailService userService;
+
+    /* 로그인 인증 관리자 설정
+    * AuthenticationManager -> 로그인 인증 관리자
+    * DaoAuthenticationProvider -> DB에서 실제 사용자 정보 확인하고 암호 비교하는 녀석
+    * UserDetailsService -> AuthenticationManager에게 사용자 정보 어디서 확인할지 알려줌
+    * BCryptPasswordEncoder -> password 해독기
+    * */
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public AuthenticationManager authenticationManager(HttpSecurity http,
+                                                       BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailsService)
+    throws Exception{
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userService);
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        return new ProviderManager(authProvider);
+    }
+
+    //    PasswordEncoder Bean 등록
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
+//    FilterChain 설정
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
