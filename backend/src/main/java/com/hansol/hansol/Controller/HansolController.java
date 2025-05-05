@@ -29,9 +29,4 @@ public class HansolController {
     public String reactAPI(){
         return "Test OK";
     }
-
-    @PostMapping("/register")
-    public String register(){
-        return "redirect:/login";
-    }
 }
