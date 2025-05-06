@@ -58,7 +58,7 @@ public class User implements UserDetails {
 //    UserDetails는 반드시 getUsername메소드 오버라이딩해야함
     @Override
     public String getUsername() {
-        return email;
+        return name;
     }
 
     @Override
