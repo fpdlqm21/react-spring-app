@@ -52,6 +52,11 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login**", "/form", "/user","/images/**").permitAll() // 로그인 없이도 접근 가능한 페이지 설정
                         .anyRequest().authenticated() // 그외 요청은 인가된 사용자만 접근 가능
                 )
+//                폼 기반 user 로그인 설정
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/weather", true)
+                )
 //                간편 로그인 설정(구글, 카카오)
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login") // 로그인 페이지 커스터마이징
