@@ -1,10 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>로그인</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin: 50px auto;
+            width: 300px;
+        }
+        h2{
+            text-align: center;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+        }
+        input, button, a{
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 14px;
+        }
+        .social-login a{
+             display: block;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .kakao{
+            background-color: #fee500;
+            color:#3c1e1e;
+            border: 1px solid #ccc;
+        }
+        .google{
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #ccc;
+        }
+        .social-login img{
+            height: 20px;
+            margin-right: 8px;
+        }
+    </style>
 </head>
 <body>
     <h2>로그인</h2>
-    <a href="/oauth2/authorization/google">구글로 로그인</a>
+    <form th:action="@{/login}" method="post">
+        <input type="text" name="username" placeholder="아이디">
+        <input type="password" name="password" placeholder="비밀번호">
+        <button type="submit">로그인</button>
+    </form>
+
+    <a th:href="@{/form}">회원가입</a>
+
+    <hr>
+
+    <div class="social-login">
+        <a th:href="@{/oauth2/authorization/google}" class="google">
+            <img th:src="@{/images/google-logo.png}" alt="Google 로고" width="20">
+            Google 간편 로그인
+        </a>
+        <a th:href="@{/oauth2/authorization/kakao}" class="kakao" width="20">
+            <img th:src="@{/images/kakao-logo.png}" alt="kakao 로고" width="20">
+            Kakao 간편 로그인
+        </a>
+    </div>
 </body>
 </html>
