@@ -23,7 +23,7 @@ public class WeatherController {
     private final NowWeatherService nowWeatherService;
 
     @GetMapping("/weather")
-    public String getWeather(Model model, Authentication authentication, OAuth2AuthenticationToken oauthToken) {
+    public String getWeather(Model model, Authentication authentication) {
         // Authentication객체 -> 현재 로그인한 사용자의 인증 정보 담고있음
         Object principal = authentication.getPrincipal(); // 사용자 정보 꺼냄
 
@@ -34,7 +34,8 @@ public class WeatherController {
             UserDetails userDetails = (UserDetails) principal;
             userName = userDetails.getUsername();
 
-        } else if(principal instanceof OAuth2User oauth2User){
+        } else if(principal instanceof OAuth2AuthenticationToken oauthToken){
+            OAuth2User oauth2User = (OAuth2User) principal;
 //            OAuth2 로그인한 경우
 //            발급받은 토큰으로 어떤 방식 간편 로그인인지 확인
             String registrationId = oauthToken.getAuthorizedClientRegistrationId();
