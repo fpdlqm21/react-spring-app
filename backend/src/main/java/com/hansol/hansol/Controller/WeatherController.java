@@ -29,15 +29,22 @@ public class WeatherController {
 
         String userName = "비회원";
 
+        /*
+        * 로그인 -> 인증 객체(Authentication)생성 <- principal이 담긴다.
+        * 로그인 방식에 따라 principal 타입 다름(UserDetails OR OAuth2User)
+        * 일반 로그인 -> UserDetails타입
+        * OAuth2로그인 -> OAuth2User타입
+        * */
+
         if(principal instanceof UserDetails){
 //            일반 로그인한 경우
             UserDetails userDetails = (UserDetails) principal;
             userName = userDetails.getUsername();
 
-        } else if(principal instanceof OAuth2AuthenticationToken oauthToken){
-            OAuth2User oauth2User = (OAuth2User) principal;
-//            OAuth2 로그인한 경우
+        } else if(authentication instanceof OAuth2AuthenticationToken oauthToken){
+//            OAuth2 로그인한 경우(Authentication객체가 OAuth2AuthenticationToken 토큰 타입일 때)
 //            발급받은 토큰으로 어떤 방식 간편 로그인인지 확인
+            OAuth2User oauth2User = (OAuth2User) principal;
             String registrationId = oauthToken.getAuthorizedClientRegistrationId();
 
             System.out.println(registrationId);
