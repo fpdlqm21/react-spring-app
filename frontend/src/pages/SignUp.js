@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
   Wrapper,
@@ -69,9 +70,23 @@ const SignUp = () => {
       return;
     }
     
-    console.log("회원가입 성공");
+    const userData = {
+      name,
+      email,
+      password,
+    };
+  
+    axios.post("/signup", userData)
+      .then((response) => {
+        console.log("서버 응답:", response.data);
+        alert("회원가입이 완료되었습니다!");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("회원가입 실패:", error);
+        alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+      });
     
-    navigate("/login");
   };
 
   return (
