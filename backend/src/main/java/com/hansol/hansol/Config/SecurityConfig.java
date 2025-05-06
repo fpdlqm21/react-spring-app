@@ -12,6 +12,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity // 모든 url요청 security 제어 받음
@@ -46,10 +51,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // csrf 공격 막기위한 기능 (개발단계에선 통신 문제 때문에 보통 비활성화)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 다른 출처(port)에서 오는 요청 허용
                 //허용할 URL 요청 설정(authorizeHttpRequests)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login**", "/form", "/user","/images/**").permitAll() // 로그인 없이도 접근 가능한 페이지 설정
+                        .requestMatchers("/", "/login**", "/form", "/user","/images/**", "/api/**").permitAll() // 로그인 없이도 접근 가능한 페이지 설정
                         .anyRequest().authenticated() // 그외 요청은 인가된 사용자만 접근 가능
                 )
 //                폼 기반 user 로그인 설정
@@ -64,5 +70,22 @@ public class SecurityConfig {
 
         return http.build(); // 위에서 설정한 보안 필터 체인 반환
 
+    }
+
+//    CORS 설정 메소드
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedOrigins(List.of("http://localhost:3000")); // React 개발 서버 주소 허용
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE")); // 허용할 http 메소드 지정
+        config.setAllowedHeaders(List.of("*")); // 모든 헤더 허용
+        config.setAllowCredentials(true); // 쿠키나 세션 같은 인증 정보를 포함할 수 있도록 허용
+
+//        /api/**뿐만 아니라, 모든 경로/에 적용함
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
     }
 }
