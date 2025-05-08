@@ -1,6 +1,7 @@
 package com.hansol.hansol.Dto;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter

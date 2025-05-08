@@ -1,6 +1,8 @@
 package com.hansol.hansol.Service;
 
 import com.hansol.hansol.Dto.NowWeatherDto;
+import com.hansol.hansol.Dto.RecommendDto;
+import com.hansol.hansol.Utils.TempRange;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +14,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-
-//http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst
-//        ?serviceKey=UGVc41C%2B%2FcUvUxumr3aNPb%2FdVTiFatzrAS99ZkHYRxUSVoedG2IKA7gTwCI7hr0kRXSQJd%2FBNmTCQOVE87Fyeg%3D%3D&numOfRows=10&pageNo=1&dataType=JSON
-//        &base_date=20250424&base_time=1104&nx=60&ny=127
+import java.util.List;
 
 @Service
 public class NowWeatherService {
@@ -23,6 +22,8 @@ public class NowWeatherService {
     private RestTemplate restTemplate = new RestTemplate();
     private final String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
     private final String ServiceKey = "UGVc41C%2B%2FcUvUxumr3aNPb%2FdVTiFatzrAS99ZkHYRxUSVoedG2IKA7gTwCI7hr0kRXSQJd%2FBNmTCQOVE87Fyeg%3D%3D";
+
+    private String Temp = "";
 
 // 기상청 api 요청(초단기 현재기온)
     public String getNowWeatherData(){
@@ -88,7 +89,8 @@ public class NowWeatherService {
 
                 switch(category){
                     case "T1H":
-                        temperature += obsrValue + "℃";
+                        temperature += obsrValue + "℃";;
+                        Temp = obsrValue;
                         break;
                 }
             }
@@ -98,5 +100,26 @@ public class NowWeatherService {
             e.printStackTrace();
             return new NowWeatherDto("N/A");
         }
+    }
+
+//    기온별 옷차림 추천 메소드
+    @Scheduled(fixedRate = 1800000)
+    public RecommendDto whatClothes(){
+        int temp = (int) Double.parseDouble(Temp);
+
+        List<TempRange> recommendation = List.of(
+                new TempRange(-20, -1, "가장 두껍고 따듯한 옷"),
+                new TempRange(0,5,"패딩"),
+                new TempRange(6, 11, "코트, 두꺼운 니트"),
+                new TempRange(12, 17, "바람막이, 자켓, 가디건"),
+                new TempRange(18, 22,"셔츠, 긴팔"),
+                new TempRange(23, 27, "반팔"),
+                new TempRange(28, 40, "가장 얇고 시원한 옷")
+        );
+
+        for(TempRange tempRange : recommendation){
+            if(tempRange.matches(temp)) return new RecommendDto(tempRange.getClothing());
+        }
+        return new RecommendDto("N/A");
     }
 }

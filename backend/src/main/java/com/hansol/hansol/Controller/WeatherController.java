@@ -1,6 +1,7 @@
 package com.hansol.hansol.Controller;
 
 import com.hansol.hansol.Dto.NowWeatherDto;
+import com.hansol.hansol.Dto.RecommendDto;
 import com.hansol.hansol.Dto.WeatherDto;
 import com.hansol.hansol.Service.NowWeatherService;
 import com.hansol.hansol.Service.WeatherService;
@@ -73,11 +74,13 @@ public class WeatherController {
 //        날씨 데이터 요청
         WeatherDto weatherData = weatherService.getWeather();
         NowWeatherDto nowWeatherDto = nowWeatherService.getNowWeather();
+        RecommendDto recommendDto = nowWeatherService.whatClothes();
 
 //        OAuth2 Login 방식 말고 form 방식의 경우 -> 컨트롤러 파라미터에 @AuthenticationPrincipal User userDetails
 //        model.addAttribute("userName", userDetails.getName()); form 로그인 방식
         model.addAttribute("userName", userName);
         model.addAttribute("nowWeatherData", nowWeatherDto);
+        model.addAttribute("recommend", recommendDto);
         model.addAttribute("weatherData", weatherData);
 
         return "weather";

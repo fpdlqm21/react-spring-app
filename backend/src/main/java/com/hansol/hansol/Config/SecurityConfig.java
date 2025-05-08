@@ -55,7 +55,13 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 다른 출처(port)에서 오는 요청 허용
                 //허용할 URL 요청 설정(authorizeHttpRequests)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login**", "/form", "/user","/images/**", "/api/**").permitAll() // 로그인 없이도 접근 가능한 페이지 설정
+                        .requestMatchers(
+                                "/login**",
+                                "/form",
+                                "/user",
+                                "/images/**",
+                                "/api/**"
+                        ).permitAll() // 로그인 없이도 접근 가능한 페이지 설정
                         .anyRequest().authenticated() // 그외 요청은 인가된 사용자만 접근 가능
                 )
 //                폼 기반 user 로그인 설정

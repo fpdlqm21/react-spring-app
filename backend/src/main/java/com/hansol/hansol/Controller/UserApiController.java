@@ -7,12 +7,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 // User 생성 요청 처리 controller
 public class UserApiController {
 
@@ -20,7 +21,7 @@ public class UserApiController {
 
     @PostMapping("/user")
     public String signup(AddUserDto request){
-        System.out.println(userService.save(request)); // 회원 가입 메소드 호출
+        userService.save(request); // 회원 가입 메소드 호출
         return "redirect:/login"; // 회원 가입 후 로그인 페이지 리다이렉트
     }
 
