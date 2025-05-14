@@ -2,8 +2,11 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import SocialLoginButton from "../components/SocialLoginButton";
+import axios from "axios";
+
 
 const Login = () => {
+  const API_URL = "http://localhost:8080/login";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
@@ -32,6 +35,27 @@ const Login = () => {
 
     // 실제 로그인 로직
     console.log("로그인 시도", { email, password });
+
+    // 시험삼아서 한번 짜본 로그인 로직
+    axios.post(API_URL, new URLSearchParams({
+      username: email,
+      password: password,
+    }),
+        {
+          headers:{
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          withCredentials : true,
+        }
+    )
+        .then(res => {
+          console.log("로그인 성공", res);
+          navigate("/Home");
+        })
+        .catch(err => {
+          console.error("로그인 실패", err);
+          alert("로그인에 실패했습니다.");
+        });
   };
 
   return (

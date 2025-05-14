@@ -24,9 +24,4 @@ public class HansolController {
     public String goForm(){
         return "form";
     }
-
-    @GetMapping("/api/react")
-    public String reactAPI(){
-        return "Test OK";
-    }
 }
