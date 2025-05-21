@@ -62,4 +62,4 @@ out/
 /frontend/yarn-error.log*
 
 # Exclude package-lock.json
-#/frontend/package-lock.json -> 요거 해도 되고 안해도 되고
+/frontend/package-lock.json 
