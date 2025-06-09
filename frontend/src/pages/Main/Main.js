@@ -1,7 +1,7 @@
 // Main.js
 import React from "react";
-import maleImg from "../images/male.png";
-import femaleImg from "../images/female.png";
+import maleImg from "../../images/male.png";
+import femaleImg from "../../images/female.png";
 import styled from "styled-components";
 
 const Main = () => {
@@ -19,18 +19,21 @@ const Main = () => {
         <CharacterWrap>
           <CharacterBox>
             <img src={maleImg} alt="남자 캐릭터" />
-            <Label>상의</Label>
-            <Label>하의</Label>
+            <ClothingLabel>상의</ClothingLabel>
+            <ClothingLabel>하의</ClothingLabel>
           </CharacterBox>
           <CharacterBox>
             <img src={femaleImg} alt="여자 캐릭터" />
-            <Label>자켓</Label>
+            <ClothingLabel>자켓</ClothingLabel>
           </CharacterBox>
         </CharacterWrap>
       </OutfitSection>
 
       <RecommendationList>
-        <h3>오늘 뭐 입지? 이번 주 총정리!</h3>
+        <SectionHeader>
+          오늘 뭐 입지? 이번 주 총정리!
+          <Arrow>➤</Arrow>
+        </SectionHeader>
         <CardScroll>
           <WeatherCard>
             <span>☀️</span>
@@ -61,8 +64,6 @@ const Main = () => {
 export default Main;
 
 // 스타일드 컴포넌트들
-
-// Container는 min-height 유지, 패딩 줄임
 const Container = styled.div`
   background: linear-gradient(#d0edff, #a2d2ff);
   padding: 20px 16px;
@@ -97,11 +98,29 @@ const WeatherInfo = styled.div`
   }
 `;
 
+const WeatherTop = styled.div`
+  text-align: center;
+  margin-bottom: 16px;
+
+  @media (max-width: 480px) {
+    margin-bottom: 12px;
+  }
+`;
+
+const OutfitSection = styled.div`
+  margin: 20px 0;
+
+  @media (max-width: 480px) {
+    margin: 16px 0;
+  }
+`;
+
 const CharacterWrap = styled.div`
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 12px;
+  position: relative;
 
   @media (max-width: 480px) {
     gap: 8px;
@@ -112,7 +131,7 @@ const CharacterBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 10px 0;
+  position: relative;
 
   img {
     height: 160px;
@@ -124,12 +143,16 @@ const CharacterBox = styled.div`
   }
 `;
 
-const Label = styled.div`
+const ClothingLabel = styled.div`
+  position: absolute;
   background: #fff;
   border-radius: 8px;
   padding: 4px 8px;
-  margin: 4px 0;
   font-size: 12px;
+  transform: translateY(-50%);
+  top: ${(props) => props.top || "auto"};
+  left: ${(props) => props.left || "auto"};
+  right: ${(props) => props.right || "auto"};
 
   @media (max-width: 480px) {
     font-size: 11px;
@@ -139,15 +162,23 @@ const Label = styled.div`
 
 const RecommendationList = styled.div`
   margin: 20px 0;
+`;
 
-  h3 {
-    font-size: 16px;
-    margin-bottom: 8px;
+const SectionHeader = styled.h3`
+  font-size: 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
-    @media (max-width: 480px) {
-      font-size: 15px;
-    }
+  @media (max-width: 480px) {
+    font-size: 15px;
   }
+`;
+
+const Arrow = styled.span`
+  font-size: 16px;
+  transform: translateY(1px);
 `;
 
 const CardScroll = styled.div`
@@ -156,7 +187,6 @@ const CardScroll = styled.div`
   overflow-x: auto;
   padding-bottom: 8px;
 
-  /* 모바일에서 카드 간격 약간 축소 */
   @media (max-width: 480px) {
     gap: 8px;
   }
@@ -201,7 +231,7 @@ const ActionButtons = styled.div`
   gap: 12px;
 
   @media (max-width: 480px) {
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
   }
 `;
@@ -219,22 +249,5 @@ const Button = styled.button`
   @media (max-width: 480px) {
     font-size: 13px;
     padding: 10px;
-  }
-`;
-
-const WeatherTop = styled.div`
-  text-align: center;
-  margin-bottom: 16px;
-
-  @media (max-width: 480px) {
-    margin-bottom: 12px;
-  }
-`;
-
-const OutfitSection = styled.div`
-  margin: 20px 0;
-
-  @media (max-width: 480px) {
-    margin: 16px 0;
   }
 `;
